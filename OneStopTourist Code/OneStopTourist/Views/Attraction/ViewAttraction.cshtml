@@ -1,0 +1,35 @@
+﻿@model IEnumerable<OneStopTourist.Models.HomePage>
+
+@{
+    ViewBag.Title = "ViewAttraction";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <!--Title and description-->
+        <h2>
+            @Html.DisplayFor(model => model.First().getAttraction.Name)
+        </h2>
+
+        @Html.DisplayFor(model => model.First().getAttraction.Address)
+    </div>
+    <div class="col-md-4">
+        <!--Tiny map-->
+        <br /><br />
+        <img src="~/Images/map.jpg" width="100%" />
+    </div>
+</div>
+<br /><br />
+<div class="row">
+    <div class="col-md12">
+        <!--Reviews-->
+        <h2 style="display:inline">Reviews</h2>
+        <input type="submit" value="Submit Review" style="float: right" />
+        @foreach (var item in Model)
+            {
+            <strong>@Html.DisplayFor(modelItem => item.getReview.Nickname)</strong><br />
+            @Html.DisplayFor(modelItem => item.getReview.Content)
+            <br /><br />
+        }
+    </div>
+</div>

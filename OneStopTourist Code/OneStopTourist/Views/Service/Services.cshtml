@@ -1,0 +1,46 @@
+﻿@model IEnumerable < OneStopTourist.Models.HomePage>
+@{
+    ViewBag.Title = "Services";
+}
+<h2>Services</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <text> </text>@Html.DropDownList("category", new SelectList(ViewBag.Category))
+        <input type="submit" value="Search" />
+    </p>
+}
+<table style="width:100%">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.getService.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.getService.Category)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.getService.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.getService.Category)
+            </td>
+            <td>
+                <a href="@Url.Action("ViewService", new { id = item.getService.Sid })">
+                    <img src="@Url.Content("~/Images/more.png")" width="15" />
+                </a>
+            </td>
+            <td>
+                <a href="">
+                    <img src="@Url.Content("~/Images/plus.png")" width="15" />
+                </a>
+            </td>
+        </tr>
+    }
+</table>

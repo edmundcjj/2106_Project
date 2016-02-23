@@ -1,0 +1,96 @@
+﻿@model IEnumerable<OneStopTourist.Models.HomePage>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+    <img src="~/Images/overview.jpg" width="100%"/>
+    </div>
+</div>
+<br/><br/>
+<div class="row">
+    <div class="col-md-8">
+        <h2 style="display:inline">Itinerary</h2>
+        @Html.ActionLink("Save", "saveItinerary", "Home")
+        <br />
+        <br/>
+        <table>
+            <tr>
+            <td>Your personal itinerary is empty.<br/>
+                @Html.ActionLink("View some recommended itinerary routes?", "Itinerary", "Home")
+            </td>
+            </tr>
+        </table>
+        <!--<p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>-->
+    </div>
+    <div class="col-md-4">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <h2>Attractions</h2>
+                </td>
+                <td colspan="2">
+                    @Html.ActionLink("View more...", "Attractions", "Attraction")
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width:80%">
+                        @Html.DisplayFor(modelItem => item.getAttraction.Name)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ViewAttraction", "Attraction", new { id = item.getAttraction.Aid })">
+                            <img src="@Url.Content("~/Images/more.png")" width="15" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <img src="@Url.Content("~/Images/plus.png")" width="15" /></a>
+                    </td>
+                </tr>
+             }
+        </table>
+        <br/>
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <h2>Services</h2>
+                </td>
+                <td colspan="2">
+                    @Html.ActionLink("View more...", "Services", "Service")
+                </td>
+                <td></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width:80%">
+                        @Html.DisplayFor(modelItem => item.getService.Name)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ViewService", "Service", new { id = item.getService.Sid })">
+                            <img src="@Url.Content("~/Images/more.png")" width="15" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <img src="@Url.Content("~/Images/plus.png")" width="15" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
