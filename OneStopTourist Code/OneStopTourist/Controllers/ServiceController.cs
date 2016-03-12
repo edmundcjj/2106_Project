@@ -10,9 +10,9 @@ namespace OneStopTourist.Controllers
 {
     public class ServiceController : Controller
     {
-        private DataGateway<Service> sGateWay = new DataGateway<Service>();
-        private RGateway rGateWay = new RGateway();
-        private SGateway sQueryGateWay = new SGateway();
+        private DataGateway<Services> sGateWay = new DataGateway<Services>();
+        private ReviewGateway rGateWay = new ReviewGateway();
+        private ServiceGateway sQueryGateWay = new ServiceGateway();
 
         public ActionResult ViewService(int? id)
         {
@@ -22,10 +22,10 @@ namespace OneStopTourist.Controllers
             HomePage viewItem = new HomePage();
             viewItem.getService = sGateWay.SelectById(id);
             reviewList.Add(viewItem);
-            foreach (Review item in reviewModel)
+            foreach (Reviews item in reviewModel)
             {
                 HomePage chgItem = new HomePage();
-                chgItem.getReview = item;
+                chgItem.getServiceReview = item;
                 reviewList.Add(chgItem);
             }
 
@@ -81,7 +81,7 @@ namespace OneStopTourist.Controllers
                 var catModel = sQueryGateWay.getServicesByCat(category);
 
                 List<HomePage> searchList = new List<HomePage>();
-                foreach (Service item in catModel)
+                foreach (Services item in catModel)
                 {
                     HomePage chgItem = new HomePage();
                     chgItem.getService = item;

@@ -46,6 +46,7 @@ namespace OneStopTourist.DAL
             return obj;
         }
 
+        
         public void Update(T obj)
         {
             db.Entry(obj).State = EntityState.Modified;

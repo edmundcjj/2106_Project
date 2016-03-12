@@ -6,19 +6,19 @@ using OneStopTourist.Models;
 
 namespace OneStopTourist.DAL
 {
-    public class AGateway : DataGateway<Attraction>
+    public class ServiceGateway : DataGateway<Services>
     {
         public IQueryable<string> getCategories()
         {
-            var categories = (from x in db.Attractions
+            var categories = (from x in db.Services
                               select x.Category).Distinct();
 
             return categories;
         }
 
-        public IQueryable<Attraction> getAttractionsByCat(string category)
+        public IQueryable<Services> getServicesByCat(string category)
         {
-            var categories = from x in db.Attractions
+            var categories = from x in db.Services
                              orderby x.Name
                              where (x.Category == category) || (category == null) || (category == "")
                              select x;

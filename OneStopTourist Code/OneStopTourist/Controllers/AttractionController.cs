@@ -10,9 +10,9 @@ namespace OneStopTourist.Controllers
 {
     public class AttractionController : Controller
     {
-        private DataGateway<Attraction> aGateWay = new DataGateway<Attraction>();
-        private RGateway rGateWay = new RGateway();
-        private AGateway aQueryGateWay = new AGateway();
+        private DataGateway<Attractions> aGateWay = new DataGateway<Attractions>();
+        private ReviewGateway rGateWay = new ReviewGateway();
+        private AttractionGateway aQueryGateWay = new AttractionGateway();
 
         public ActionResult ViewAttraction(int? id)
         {
@@ -22,7 +22,7 @@ namespace OneStopTourist.Controllers
             HomePage viewItem = new HomePage();
             viewItem.getAttraction = aGateWay.SelectById(id);
             reviewList.Add(viewItem);
-            foreach (Review item in reviewModel)
+            foreach (Reviews item in reviewModel)
             {
                 HomePage chgItem = new HomePage();
                 chgItem.getReview = item;
@@ -81,7 +81,7 @@ namespace OneStopTourist.Controllers
                 var catModel = aQueryGateWay.getAttractionsByCat(category);
 
                 List<HomePage> searchList = new List<HomePage>();
-                foreach (Attraction item in catModel)
+                foreach (Attractions item in catModel)
                 {
                     HomePage chgItem = new HomePage();
                     chgItem.getAttraction = item;

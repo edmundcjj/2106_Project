@@ -10,8 +10,8 @@ namespace OneStopTourist.Controllers
 {
     public class HomeController : Controller
     {
-        private DataGateway<Attraction> aGateWay = new DataGateway<Attraction>();
-        private DataGateway<Service> sGateWay = new DataGateway<Service>();
+        private DataGateway<Attractions> aGateWay = new DataGateway<Attractions>();
+        private DataGateway<Services> sGateWay = new DataGateway<Services>();
 
         public ActionResult Index()
         {

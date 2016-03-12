@@ -26,8 +26,8 @@ namespace OneStopTourist.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=edmundchow92.database.windows.net;Initial Catalog=2106_Project;User I" +
-            "D=edmundchow;Password=Edmund92chow")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=edmundchow2106.database.windows.net;Initial Catalog=\"One Stop Tourist" +
+            "\";Persist Security Info=True;User ID=edmundchow;Password=Edmund92chow")]
         public string DefaultConnection {
             get {
                 return ((string)(this["DefaultConnection"]));

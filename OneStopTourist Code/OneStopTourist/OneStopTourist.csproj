@@ -208,19 +208,19 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
-    <Compile Include="DAL\AGateway.cs" />
+    <Compile Include="DAL\AttractionGateway.cs" />
     <Compile Include="DAL\DataGateway.cs" />
     <Compile Include="DAL\IDataGateway.cs" />
-    <Compile Include="DAL\IGateway.cs" />
+    <Compile Include="DAL\ItineraryGateway.cs" />
     <Compile Include="DAL\OneStopTouristContext.cs" />
-    <Compile Include="DAL\RGateway.cs" />
-    <Compile Include="DAL\SGateway.cs" />
+    <Compile Include="DAL\ReviewGateway.cs" />
+    <Compile Include="DAL\ServiceGateway.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
-    <Compile Include="Models\Itinerary.cs" />
-    <Compile Include="Models\PersonalItinerary.cs" />
+    <Compile Include="Models\Itineraries.cs" />
+    <Compile Include="Models\Personal_Itineraries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

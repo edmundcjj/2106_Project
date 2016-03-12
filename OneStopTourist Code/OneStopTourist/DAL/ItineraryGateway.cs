@@ -6,7 +6,7 @@ using OneStopTourist.Models;
 
 namespace OneStopTourist.DAL
 {
-    public class IGateway: DataGateway<Itinerary>
+    public class ItineraryGateway: DataGateway<Itineraries>
     {
     }
 }
