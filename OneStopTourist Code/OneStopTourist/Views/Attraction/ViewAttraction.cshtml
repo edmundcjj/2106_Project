@@ -11,12 +11,12 @@
             @Html.DisplayFor(model => model.First().getAttraction.Name)
         </h2>
 
-        @Html.DisplayFor(model => model.First().getAttraction.Address)
+        <span id="addressText"></span>
     </div>
     <div class="col-md-4">
         <!--Tiny map-->
         <br /><br />
-        <img src="~/Images/map.jpg" width="100%" />
+        <div id="map" style="width:100%;height:320px;"></div>
     </div>
 </div>
 <br /><br />
@@ -24,12 +24,87 @@
     <div class="col-md12">
         <!--Reviews-->
         <h2 style="display:inline">Reviews</h2>
+        <span class="star-rating">
+            <input type="radio" name="rating" value="1"><i></i>
+            <input type="radio" name="rating" value="2"><i></i>
+            <input type="radio" name="rating" value="3"><i></i>
+            <input type="radio" name="rating" value="4"><i></i>
+            <input type="radio" name="rating" value="5"><i></i>
+        </span>
+        <strong class="choice">Choose a rating</strong>
         <input type="submit" value="Submit Review" style="float: right" />
         @foreach (var item in Model)
-            {
+        {
             <strong>@Html.DisplayFor(modelItem => item.getReview.Nickname)</strong><br />
             @Html.DisplayFor(modelItem => item.getReview.Content)
             <br /><br />
+            @Html.DisplayFor(modelItem => item.getReview.Ratings)
+            <!--<span class="star-rating">
+                if (item.getReview.Ratings != null)
+                {
+                    if (item.getReview.Ratings.Equals("1"))
+                    {
+                        <input type="radio" name="ratedisplay" value="1" selected><i></i>
+                        <input type="radio" name="ratedisplay" value="2"><i></i>
+                        <input type="radio" name="ratedisplay" value="3"><i></i>
+                        <input type="radio" name="ratedisplay" value="4"><i></i>
+                        <input type="radio" name="ratedisplay" value="5"><i></i>
+                    }
+                    else if (item.getReview.Ratings.Equals("2"))
+                    {
+                        <input type="radio" name="ratedisplay" value="1"><i></i>
+                        <input type="radio" name="ratedisplay" value="2" selected><i></i>
+                        <input type="radio" name="ratedisplay" value="3"><i></i>
+                        <input type="radio" name="ratedisplay" value="4"><i></i>
+                        <input type="radio" name="ratedisplay" value="5"><i></i>
+                    }
+                    else if (item.getReview.Ratings.Equals("3"))
+                    {
+                        <input type="radio" name="ratedisplay" value="1"><i></i>
+                        <input type="radio" name="ratedisplay" value="2"><i></i>
+                        <input type="radio" name="ratedisplay" value="3" selected><i></i>
+                        <input type="radio" name="ratedisplay" value="4"><i></i>
+                        <input type="radio" name="ratedisplay" value="5"><i></i>
+                    }
+                    else if (item.getReview.Ratings.Equals("4"))
+                    {
+                        <input type="radio" name="ratedisplay" value="1"><i></i>
+                        <input type="radio" name="ratedisplay" value="2"><i></i>
+                        <input type="radio" name="ratedisplay" value="3"><i></i>
+                        <input type="radio" name="ratedisplay" value="4" selected><i></i>
+                        <input type="radio" name="ratedisplay" value="5"><i></i>
+                    }
+                    else if (item.getReview.Ratings.Equals("5"))
+                    {
+                        <input type="radio" name="ratedisplay" value="1"><i></i>
+                        <input type="radio" name="ratedisplay" value="2"><i></i>
+                        <input type="radio" name="ratedisplay" value="3"><i></i>
+                        <input type="radio" name="ratedisplay" value="4"><i></i>
+                        <input type="radio" name="ratedisplay" value="5" selected><i></i>
+                    }
+                    else
+                    {
+                        <input type="radio" name="ratedisplay" value="1"><i></i>
+                        <input type="radio" name="ratedisplay" value="2"><i></i>
+                        <input type="radio" name="ratedisplay" value="3"><i></i>
+                        <input type="radio" name="ratedisplay" value="4"><i></i>
+                        <input type="radio" name="ratedisplay" value="5"><i></i>
+                    }
+                }
+            </span>-->
+            <br/><br/>
         }
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../Scripts/map.js"></script>
+
+<script>
+    getItemMap(@Html.Raw(Json.Encode(Model.First().getAttraction.Latitude)), @Html.Raw(Json.Encode(Model.First().getAttraction.Longitude)));
+
+    $('input[name=rating]:radio').change(
+    function(){
+        $('.choice').text( $(this).val() + ' stars' );
+    });
+</script>
+

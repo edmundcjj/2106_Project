@@ -25,5 +25,16 @@ namespace OneStopTourist.DAL
 
             return categories;
         }
+
+        public IQueryable<Services> getRecommendedServices()
+        {
+            var reviewModel = (from x in db.Services
+                              join y in db.ServiceReviews on x.Sid equals y.Sid
+                              join z in db.Reviews on y.Rid equals z.Rid
+                              orderby z.Ratings ascending
+                              select x).GroupBy(a => a.Sid).Select(b => b.FirstOrDefault()); ;
+
+            return reviewModel;
+        }
     }
 }
