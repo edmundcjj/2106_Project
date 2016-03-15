@@ -13,20 +13,29 @@ namespace OneStopTourist.Controllers
         private DataGateway<Attractions> aGateWay = new DataGateway<Attractions>();
         private ReviewGateway rGateWay = new ReviewGateway();
         private AttractionGateway aQueryGateWay = new AttractionGateway();
+        private DataGateway<Reviews> rDGateway = new DataGateway<Reviews>();
+        private DataGateway<Attractions_has_Reviews> raDGateway = new DataGateway<Attractions_has_Reviews>();
 
         public ActionResult ViewAttraction(int? id)
         {
             var reviewModel = rGateWay.getAttractionReview(id);
 
+            //Create a list to store both the attraction details and all of its reviews
             List<HomePage> reviewList = new List<HomePage>();
             HomePage viewItem = new HomePage();
             viewItem.getAttraction = aGateWay.SelectById(id);
+            //First review is stored in the first element of reviewList with the attraction details
+            viewItem.getReview = reviewModel.First();
             reviewList.Add(viewItem);
             foreach (Reviews item in reviewModel)
             {
-                HomePage chgItem = new HomePage();
-                chgItem.getReview = item;
-                reviewList.Add(chgItem);
+                //Because first review has been stored, we're only adding subsequent reviews
+                if (item != viewItem.getReview)
+                {
+                    HomePage chgItem = new HomePage();
+                    chgItem.getReview = item;
+                    reviewList.Add(chgItem);
+                }
             }
 
             return View(reviewList);
@@ -91,6 +100,32 @@ namespace OneStopTourist.Controllers
             }
 
             return View(names.ToList());
+        }
+
+        // POST: Attraction/ViewAttraction
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewAttraction(int id)
+        {
+            Reviews review = new Reviews();
+            Attractions_has_Reviews attractionReview = new Attractions_has_Reviews();
+            if (Request.Form["rating"] != null)
+            {
+                string givenRatings = Request.Form["rating"].ToString();
+                string givenNickname = Request.Form["nickname"].ToString();
+                string givenContent = Request.Form["content"].ToString();
+                review.Ratings = givenRatings;
+                review.Nickname = givenNickname;
+                review.Content = givenContent;
+                review.ReviewDate = DateTime.Now;
+            }
+            rDGateway.Insert(review);
+
+
+            attractionReview.Rid = review.Rid;
+            attractionReview.Aid = id;
+            raDGateway.Insert(attractionReview);
+            return RedirectToAction("Attractions", id);
         }
     }
 }

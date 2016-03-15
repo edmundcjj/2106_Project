@@ -47,12 +47,14 @@ namespace OneStopTourist.Models
 
         public string Ratings { get; set; }
         public string Content { get; set; }
+        public DateTime ReviewDate { get; set; }
     }
 
     public class Attractions_has_Reviews
     {
         [Key]
         //[ForeignKey("Reviews")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Rid { get; set; }
 
         [Required]
@@ -67,6 +69,7 @@ namespace OneStopTourist.Models
     {
         [Key]
         //[ForeignKey("Reviews")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Rid { get; set; }
 
         [Required]

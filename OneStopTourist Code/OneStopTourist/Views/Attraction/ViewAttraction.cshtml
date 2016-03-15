@@ -4,6 +4,7 @@
     ViewBag.Title = "ViewAttraction";
 }
 
+<script language="JavaScript" type="text/javascript" src="../../Scripts/ratings.js"></script>
 <div class="row">
     <div class="col-md-8">
         <!--Title and description-->
@@ -21,80 +22,72 @@
 </div>
 <br /><br />
 <div class="row">
-    <div class="col-md12">
         <!--Reviews-->
-        <h2 style="display:inline">Reviews</h2>
-        <span class="star-rating">
-            <input type="radio" name="rating" value="1"><i></i>
-            <input type="radio" name="rating" value="2"><i></i>
-            <input type="radio" name="rating" value="3"><i></i>
-            <input type="radio" name="rating" value="4"><i></i>
-            <input type="radio" name="rating" value="5"><i></i>
-        </span>
-        <strong class="choice">Choose a rating</strong>
-        <input type="submit" value="Submit Review" style="float: right" />
+        <h3>Reviews</h3>
+        <hr/>
+    <div class="col-md-6">
         @foreach (var item in Model)
         {
-            <strong>@Html.DisplayFor(modelItem => item.getReview.Nickname)</strong><br />
-            @Html.DisplayFor(modelItem => item.getReview.Content)
-            <br /><br />
-            @Html.DisplayFor(modelItem => item.getReview.Ratings)
-            <!--<span class="star-rating">
-                if (item.getReview.Ratings != null)
-                {
-                    if (item.getReview.Ratings.Equals("1"))
-                    {
-                        <input type="radio" name="ratedisplay" value="1" selected><i></i>
-                        <input type="radio" name="ratedisplay" value="2"><i></i>
-                        <input type="radio" name="ratedisplay" value="3"><i></i>
-                        <input type="radio" name="ratedisplay" value="4"><i></i>
-                        <input type="radio" name="ratedisplay" value="5"><i></i>
-                    }
-                    else if (item.getReview.Ratings.Equals("2"))
-                    {
-                        <input type="radio" name="ratedisplay" value="1"><i></i>
-                        <input type="radio" name="ratedisplay" value="2" selected><i></i>
-                        <input type="radio" name="ratedisplay" value="3"><i></i>
-                        <input type="radio" name="ratedisplay" value="4"><i></i>
-                        <input type="radio" name="ratedisplay" value="5"><i></i>
-                    }
-                    else if (item.getReview.Ratings.Equals("3"))
-                    {
-                        <input type="radio" name="ratedisplay" value="1"><i></i>
-                        <input type="radio" name="ratedisplay" value="2"><i></i>
-                        <input type="radio" name="ratedisplay" value="3" selected><i></i>
-                        <input type="radio" name="ratedisplay" value="4"><i></i>
-                        <input type="radio" name="ratedisplay" value="5"><i></i>
-                    }
-                    else if (item.getReview.Ratings.Equals("4"))
-                    {
-                        <input type="radio" name="ratedisplay" value="1"><i></i>
-                        <input type="radio" name="ratedisplay" value="2"><i></i>
-                        <input type="radio" name="ratedisplay" value="3"><i></i>
-                        <input type="radio" name="ratedisplay" value="4" selected><i></i>
-                        <input type="radio" name="ratedisplay" value="5"><i></i>
-                    }
-                    else if (item.getReview.Ratings.Equals("5"))
-                    {
-                        <input type="radio" name="ratedisplay" value="1"><i></i>
-                        <input type="radio" name="ratedisplay" value="2"><i></i>
-                        <input type="radio" name="ratedisplay" value="3"><i></i>
-                        <input type="radio" name="ratedisplay" value="4"><i></i>
-                        <input type="radio" name="ratedisplay" value="5" selected><i></i>
-                    }
-                    else
-                    {
-                        <input type="radio" name="ratedisplay" value="1"><i></i>
-                        <input type="radio" name="ratedisplay" value="2"><i></i>
-                        <input type="radio" name="ratedisplay" value="3"><i></i>
-                        <input type="radio" name="ratedisplay" value="4"><i></i>
-                        <input type="radio" name="ratedisplay" value="5"><i></i>
-                    }
-                }
-            </span>-->
-            <br/><br/>
+            <strong>@Html.DisplayFor(modelItem => item.getReview.Nickname)</strong>
+            <br />
+            <span id="rateNumber">@Html.DisplayFor(modelItem => item.getReview.Ratings)</span>
+            <span class="star-rating">
+                <input type="radio" name="ratedisplay" id="1" value="1" onclick="return false;"><i></i>
+                <input type="radio" name="ratedisplay" id="2" value="2" onclick="return false;"><i></i>
+                <input type="radio" name="ratedisplay" id="3" value="3" onclick="return false;"><i></i>
+                <input type="radio" name="ratedisplay" id="4" value="4" onclick="return false;"><i></i>
+                <input type="radio" name="ratedisplay" id="5" value="5" onclick="return false;"><i></i>
+            </span><br />
+            <script>setRatings()</script>
+            <span style="font-style:italic;font-size:0.9em;">Posted on @Html.DisplayFor(modelItem => item.getReview.ReviewDate)</span>
+            <br /><br/>
+            @Html.DisplayFor(modelItem => item.getReview.Content)<br /><br />
         }
     </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <h4>Submit a Review</h4>
+        <div class="col-md-6">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstOrDefault().getReview.Nickname, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" name="nickname" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstOrDefault().getReview.Ratings, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    <span class="star-rating">
+                        <input type="radio" name="rating" value="1"><i></i>
+                        <input type="radio" name="rating" value="2"><i></i>
+                        <input type="radio" name="rating" value="3"><i></i>
+                        <input type="radio" name="rating" value="4"><i></i>
+                        <input type="radio" name="rating" value="5"><i></i>
+                    </span>
+                    <!--<strong class="choice">Choose a rating</strong>-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstOrDefault().getReview.Content, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    <textarea rows="4" cols="50" name="content"></textarea>
+                </div>
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Submit" class="btn btn-default" />
+                </div>
+            </div>
+            </div>
+    }
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="../../Scripts/map.js"></script>

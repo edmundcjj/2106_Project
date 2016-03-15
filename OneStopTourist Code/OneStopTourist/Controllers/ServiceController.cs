@@ -13,20 +13,29 @@ namespace OneStopTourist.Controllers
         private DataGateway<Services> sGateWay = new DataGateway<Services>();
         private ReviewGateway rGateWay = new ReviewGateway();
         private ServiceGateway sQueryGateWay = new ServiceGateway();
+        private DataGateway<Reviews> rDGateway = new DataGateway<Reviews>();
+        private DataGateway<Services_has_Reviews> rsDGateway = new DataGateway<Services_has_Reviews>();
 
         public ActionResult ViewService(int? id)
         {
             var reviewModel = rGateWay.getServiceReview(id);
 
+            //Create a list to store both the service details and all of its reviews
             List<HomePage> reviewList = new List<HomePage>();
             HomePage viewItem = new HomePage();
             viewItem.getService = sGateWay.SelectById(id);
+            //First review is stored in the first element of reviewList with the service details
+            viewItem.getReview = reviewModel.First();
             reviewList.Add(viewItem);
             foreach (Reviews item in reviewModel)
             {
-                HomePage chgItem = new HomePage();
-                chgItem.getServiceReview = item;
-                reviewList.Add(chgItem);
+                //Because first review has been stored, we're only adding subsequent reviews
+                if (item != viewItem.getReview)
+                {
+                    HomePage chgItem = new HomePage();
+                    chgItem.getReview = item;
+                    reviewList.Add(chgItem);
+                }
             }
 
             return View(reviewList);
@@ -91,6 +100,32 @@ namespace OneStopTourist.Controllers
             }
 
             return View(categories.ToList());
+        }
+
+        // POST: Attraction/ViewAttraction
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewService(int id)
+        {
+            Reviews review = new Reviews();
+            Services_has_Reviews serviceReview = new Services_has_Reviews();
+            if (Request.Form["rating"] != null)
+            {
+                string givenRatings = Request.Form["rating"].ToString();
+                string givenNickname = Request.Form["nickname"].ToString();
+                string givenContent = Request.Form["content"].ToString();
+                review.Ratings = givenRatings;
+                review.Nickname = givenNickname;
+                review.Content = givenContent;
+                review.ReviewDate = DateTime.Now;
+            }
+            rDGateway.Insert(review);
+
+
+            serviceReview.Rid = review.Rid;
+            serviceReview.Sid = id;
+            rsDGateway.Insert(serviceReview);
+            return RedirectToAction("Services", id);
         }
     }
 }
