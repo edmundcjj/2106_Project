@@ -28,5 +28,16 @@ namespace OneStopTourist.DAL
             
             return reviewModel;
         }
+
+        public IQueryable<Reviews> getItineraryReview(int? id)
+        {
+            //Get list of reviews of a particular Service, Sid
+            var reviewModel = from x in db.Reviews
+                              join y in db.ItineraryReviews on x.Rid equals y.Rid
+                              where (y.Iid == id)
+                              select x;
+
+            return reviewModel;
+        }
     }
 }

@@ -208,6 +208,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItineraryController.cs" />
     <Compile Include="Controllers\MapController.cs" />
+    <Compile Include="Controllers\Personal_ItinerariesController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DAL\AttractionGateway.cs" />
     <Compile Include="DAL\AttractionReviewGateway.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="DAL\IDataGateway.cs" />
     <Compile Include="DAL\ItineraryGateway.cs" />
     <Compile Include="DAL\OneStopTouristContext.cs" />
+    <Compile Include="DAL\Personal_ItinerariesGateway.cs" />
     <Compile Include="DAL\ReviewGateway.cs" />
     <Compile Include="DAL\ServiceGateway.cs" />
     <Compile Include="Global.asax.cs">
@@ -222,6 +224,7 @@
     </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\Itineraries.cs" />
+    <Compile Include="Models\ItinerariesViewModel.cs" />
     <Compile Include="Models\Personal_Itineraries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -289,12 +292,17 @@
     <Content Include="Views\Attraction\Attractions.cshtml" />
     <Content Include="Views\Service\Services.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Itinerary.cshtml" />
     <Content Include="Views\Home\SaveItinerary.cshtml" />
     <Content Include="Views\Attraction\ViewAttraction.cshtml" />
     <Content Include="Views\Service\ViewService.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_IdentityPartial.cshtml" />
+    <Content Include="Views\Personal_Itineraries\Save.cshtml" />
+    <Content Include="Views\Personal_Itineraries\Upload.cshtml" />
+    <Content Include="Views\Itinerary\Itineraries.cshtml" />
+    <Content Include="Views\Personal_Itineraries\SignIn.cshtml" />
+    <Content Include="Views\Itinerary\ViewItinerary.cshtml" />
+    <Content Include="Views\Itinerary\RecommendedItineraries.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

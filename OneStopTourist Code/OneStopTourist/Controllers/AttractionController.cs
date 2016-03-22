@@ -20,25 +20,29 @@ namespace OneStopTourist.Controllers
         {
             var reviewModel = rGateWay.getAttractionReview(id);
 
-            //Create a list to store both the attraction details and all of its reviews
-            List<HomePage> reviewList = new List<HomePage>();
             HomePage viewItem = new HomePage();
             viewItem.getAttraction = aGateWay.SelectById(id);
-            //First review is stored in the first element of reviewList with the attraction details
-            viewItem.getReview = reviewModel.First();
-            reviewList.Add(viewItem);
-            foreach (Reviews item in reviewModel)
+
+            if (!reviewModel.Any())
             {
-                //Because first review has been stored, we're only adding subsequent reviews
-                if (item != viewItem.getReview)
+                List<HomePage> attractionPage = new List<HomePage>();
+                attractionPage.Add(viewItem);
+
+                return View(attractionPage);
+            }
+            else {
+                //Create a list to store both the attraction details and all of its reviews
+                List<HomePage> reviewList = new List<HomePage>();
+                //First review is stored in the first element of reviewList with the attraction details
+                reviewList.Add(viewItem);
+                foreach (Reviews item in reviewModel)
                 {
                     HomePage chgItem = new HomePage();
                     chgItem.getReview = item;
                     reviewList.Add(chgItem);
                 }
+                return View(reviewList);
             }
-
-            return View(reviewList);
         }
 
         public ActionResult Attractions(string sortOrder, string searchString, string category)

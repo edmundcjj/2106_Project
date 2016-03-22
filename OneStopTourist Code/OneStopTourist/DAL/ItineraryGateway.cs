@@ -6,8 +6,9 @@ using OneStopTourist.Models;
 
 namespace OneStopTourist.DAL
 {
-    public class ItineraryGateway: DataGateway<Itineraries>
+    public class ItineraryGateway : DataGateway<Itineraries>
     {
+        // Retrieve list of reccomended itineraries
         public IQueryable<Itineraries> getRecommendedItineraries()
         {
             var recommendedItinerary = (from x in db.Itineraries
@@ -18,5 +19,15 @@ namespace OneStopTourist.DAL
 
             return recommendedItinerary;
         }
+
+        // Retrieve all itineraries
+        public IQueryable<Itineraries> getAllItineraries()
+        {
+            var AllItineraries = (from x in db.Itineraries
+                                  select x);
+
+            return AllItineraries;
+        }
+
     }
 }

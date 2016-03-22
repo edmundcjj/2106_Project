@@ -50,8 +50,152 @@ namespace OneStopTourist.Controllers
                     allList.Add(item);
                 }
             }
+            
+            List<HomePage> sessionItinerary = (List<HomePage>) Session["myItinerary"];
+
+            if (sessionItinerary != null)
+            {
+                foreach (HomePage item in sessionItinerary)
+                {
+                    allList.Add(item);
+                }
+            }
 
             return View(allList);
+        }
+
+        public ActionResult AddAttraction(int? id)
+        {
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getAttraction = aGateway.SelectById(id);
+            if (sessionItinerary == null)
+            {
+                sessionItinerary = new List<HomePage>();
+                sessionItinerary.Add(item);
+            }
+            else {
+                sessionItinerary.Add(item);
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AddService(int? id)
+        {
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getService = sGateway.SelectById(id);
+
+            if (sessionItinerary == null)
+            {
+                sessionItinerary = new List<HomePage>();
+                sessionItinerary.Add(item);
+            }
+            else
+            {
+                sessionItinerary.Add(item);
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveAttraction(int? id)
+        {
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getAttraction = aGateway.SelectById(id);
+            if (sessionItinerary != null)
+            {
+                sessionItinerary.Remove(item);
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveService(int? id)
+        {
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getService = sGateway.SelectById(id);
+            if (sessionItinerary != null)
+            {
+                sessionItinerary.Remove(item);
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult MoveAttractionDown(int? id)
+        {
+            int selectedindex = 0;
+
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getAttraction = aGateway.SelectById(id);
+
+            if (sessionItinerary != null)
+            {
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+
+                    if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                    {
+                        selectedindex = i;
+                    }
+
+                }
+                var x = sessionItinerary[selectedindex];
+                var y = sessionItinerary[selectedindex + 1];
+
+                sessionItinerary[selectedindex] = y;
+                sessionItinerary[selectedindex + 1] = x;
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult MoveAttractionUp(int? id)
+        {
+            int selectedindex = 0;
+
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getAttraction = aGateway.SelectById(id);
+
+            if (sessionItinerary != null)
+            {
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+
+                    if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                    {
+                        selectedindex = i;
+                    }
+
+                }
+                var x = sessionItinerary[selectedindex];
+                var y = sessionItinerary[selectedindex - 1];
+
+                sessionItinerary[selectedindex] = y;
+                sessionItinerary[selectedindex - 1] = x;
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Itinerary()

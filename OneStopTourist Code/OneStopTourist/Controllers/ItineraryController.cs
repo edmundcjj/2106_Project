@@ -10,13 +10,80 @@ namespace OneStopTourist.Controllers
 {
     public class ItineraryController : Controller
     {
-        private DataGateway<Itineraries> iGateway = new DataGateway<Itineraries>();
+        private ItineraryGateway iGateway = new ItineraryGateway();
+        private ReviewGateway rGateWay = new ReviewGateway();
 
-        // GET: Itinerary
-        public ActionResult Index()
+        // GET: All Itineraries
+        public ActionResult Itineraries()
         {
-            return View();
+            return View(iGateway.getAllItineraries());
         }
+
+        // GET: Recommended Itineraries
+        public ActionResult RecommendedItineraries()
+        {
+            return View(iGateway.getRecommendedItineraries());
+        }
+
+        // GET: Itinerary Details
+        public ActionResult ViewItinerary(int? id)
+        {
+            var reviewModel = rGateWay.getItineraryReview(id);
+
+            ItineraryPage viewItem = new ItineraryPage();
+            viewItem.getItinerary = iGateway.SelectById(id);
+
+            if (!reviewModel.Any())
+            {
+                List<ItineraryPage> reviewPage = new List<ItineraryPage>();
+                reviewPage.Add(viewItem);
+
+                return View(reviewPage);
+            }
+            else {
+                //Create a list to store both the itinerary details and all of its reviews
+                List<ItineraryPage> reviewList = new List<ItineraryPage>();
+                //First review is stored in the first element of reviewList with the attraction details
+                reviewList.Add(viewItem);
+                foreach (Reviews item in reviewModel)
+                {
+                    ItineraryPage chgItem = new ItineraryPage();
+                    chgItem.getReview = item;
+                    reviewList.Add(chgItem);
+                }
+                return View(reviewList);
+            }
+        }
+
+        // POST: Itinerary/ViewItinerary
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewItinerary(int id)
+        {
+            Reviews review = new Reviews();
+            Itineraries_has_Reviews itineraryReview = new Itineraries_has_Reviews();
+            if (Request.Form["rating"] != null)
+            {
+                string givenRatings = Request.Form["rating"].ToString();
+                string givenNickname = Request.Form["nickname"].ToString();
+                string givenContent = Request.Form["content"].ToString();
+                review.Ratings = givenRatings;
+                review.Nickname = givenNickname;
+                review.Content = givenContent;
+                review.ReviewDate = DateTime.Now;
+            }
+            rGateWay.Insert(review);
+
+            itineraryReview.Rid = review.Rid;
+            itineraryReview.Iid = id;
+            return RedirectToAction("Itineraries", id);
+        }
+
+
+
+
+
+
 
         // GET: Itinerary/Details/5
         public ActionResult Details(int id)

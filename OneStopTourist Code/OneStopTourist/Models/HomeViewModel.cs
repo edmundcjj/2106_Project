@@ -87,5 +87,7 @@ namespace OneStopTourist.Models
         public Reviews getReview { get; set; }
         public Reviews getAttractionReview { get; set; }
         public Reviews getServiceReview { get; set; }
+
+        public HomePage getSessionItinerary { get; set; }
     }
 }

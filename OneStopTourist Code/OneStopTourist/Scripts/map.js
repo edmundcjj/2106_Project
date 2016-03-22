@@ -1,11 +1,16 @@
 ﻿var map;
+var directionsService = new google.maps.DirectionsService();
 
 /* initMap() */
 function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 1.3, lng: 103.8 },
         zoom: 11
     });
+    directionsDisplay.setMap(map);
+
 }
 
 
@@ -38,3 +43,17 @@ function getItemMap(latitude, longitude) {
         }
     });
 }
+
+function calcRoute(start, end) {
+    var request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function (result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(result);
+        }
+    });
+}
+

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,10 +10,9 @@ namespace OneStopTourist.Models
     {
         [Key]
         public int Iid { get; set; }
-        
+
         public string Nickname { get; set; }
         public string Content { get; set; }
-        public string Category { get; set; }
     }
 
     public class Itineraries_has_Reviews
@@ -29,5 +27,12 @@ namespace OneStopTourist.Models
 
         //public virtual Reviews Reviews { get; set; }
         //public virtual Itineraries Itineraries { get; set; }
+    }
+
+    public class ItineraryPage
+    {
+        public Itineraries getItinerary { get; set; }
+        public Reviews getReview { get; set; }
+        public Reviews getItineraryReview { get; set; }
     }
 }

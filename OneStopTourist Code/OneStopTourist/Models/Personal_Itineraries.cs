@@ -11,8 +11,12 @@ namespace OneStopTourist.Models
         [Key]
         public int PIid { get; set; }
         
-        public string Nickname { get; set; }
         public string Content { get; set; }
-        public string Category { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The Nickname must be at least {2} characters long.", MinimumLength = 2)]
+        public string Nickname { get; set; }
+
+        public string Pin { get; set; }
     }
 }
