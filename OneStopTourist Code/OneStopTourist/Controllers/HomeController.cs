@@ -106,12 +106,27 @@ namespace OneStopTourist.Controllers
 
         public ActionResult RemoveAttraction(int? id)
         {
+            int selectedindex = 0;
             List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
             HomePage item = new HomePage();
             item.getAttraction = aGateway.SelectById(id);
             if (sessionItinerary != null)
             {
-                sessionItinerary.Remove(item);
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+
+                    if (sessionItinerary[i].getAttraction != null)
+                    {
+                        if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                        {
+                            selectedindex = i;
+                        }
+                    }
+
+                }
+
+                sessionItinerary.RemoveAt(selectedindex);
             }
 
             Session["myItinerary"] = sessionItinerary;
@@ -121,12 +136,27 @@ namespace OneStopTourist.Controllers
 
         public ActionResult RemoveService(int? id)
         {
+            int selectedindex = 0;
             List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
             HomePage item = new HomePage();
             item.getService = sGateway.SelectById(id);
             if (sessionItinerary != null)
             {
-                sessionItinerary.Remove(item);
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+                    
+                    if (sessionItinerary[i].getService != null)
+                    {
+                        if ((sessionItinerary[i].getService.Name).Equals(item.getService.Name))
+                        {
+                            selectedindex = i;
+                        }
+                    }
+
+                }
+
+                sessionItinerary.RemoveAt(selectedindex);
             }
 
             Session["myItinerary"] = sessionItinerary;
@@ -148,17 +178,24 @@ namespace OneStopTourist.Controllers
                 {
                     var something = sessionItinerary[i];
 
-                    if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                    if (sessionItinerary[i].getAttraction != null)
                     {
-                        selectedindex = i;
+                        if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                        {
+                            selectedindex = i;
+                        }
                     }
 
                 }
-                var x = sessionItinerary[selectedindex];
-                var y = sessionItinerary[selectedindex + 1];
 
-                sessionItinerary[selectedindex] = y;
-                sessionItinerary[selectedindex + 1] = x;
+                if ((sessionItinerary.Count-1 != 0) && (selectedindex != sessionItinerary.Count-1))
+                {
+                    var x = sessionItinerary[selectedindex];
+                    var y = sessionItinerary[selectedindex + 1];
+
+                    sessionItinerary[selectedindex] = y;
+                    sessionItinerary[selectedindex + 1] = x;
+                }
             }
 
             Session["myItinerary"] = sessionItinerary;
@@ -180,17 +217,100 @@ namespace OneStopTourist.Controllers
                 {
                     var something = sessionItinerary[i];
 
-                    if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                    if (sessionItinerary[i].getAttraction != null)
                     {
-                        selectedindex = i;
+                        if ((sessionItinerary[i].getAttraction.Name).Equals(item.getAttraction.Name))
+                        {
+                            selectedindex = i;
+                        }
                     }
 
                 }
-                var x = sessionItinerary[selectedindex];
-                var y = sessionItinerary[selectedindex - 1];
+                
+                if ((sessionItinerary.Count - 1 != 0) && (selectedindex != 0))
+                {
+                    var x = sessionItinerary[selectedindex];
+                    var y = sessionItinerary[selectedindex - 1];
 
-                sessionItinerary[selectedindex] = y;
-                sessionItinerary[selectedindex - 1] = x;
+                    sessionItinerary[selectedindex] = y;
+                    sessionItinerary[selectedindex - 1] = x;
+                }
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult MoveServiceDown(int? id)
+        {
+            int selectedindex = 0;
+
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getService = sGateway.SelectById(id);
+
+            if (sessionItinerary != null)
+            {
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+
+                    if (sessionItinerary[i].getService != null)
+                    { 
+                        if ((sessionItinerary[i].getService.Name).Equals(item.getService.Name))
+                        {
+                            selectedindex = i;
+                        }
+                    }
+                }
+
+                if ((sessionItinerary.Count - 1 != 0) && (selectedindex != sessionItinerary.Count-1))
+                {
+                    var x = sessionItinerary[selectedindex];
+                    var y = sessionItinerary[selectedindex + 1];
+
+                    sessionItinerary[selectedindex] = y;
+                    sessionItinerary[selectedindex + 1] = x;
+                }
+            }
+
+            Session["myItinerary"] = sessionItinerary;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult MoveServiceUp(int? id)
+        {
+            int selectedindex = 0;
+
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+            HomePage item = new HomePage();
+            item.getService = sGateway.SelectById(id);
+
+            if (sessionItinerary != null)
+            {
+                for (int i = 0; i < sessionItinerary.Count; i++)
+                {
+                    var something = sessionItinerary[i];
+
+                    if (sessionItinerary[i].getService != null)
+                    {
+                        if ((sessionItinerary[i].getService.Name).Equals(item.getService.Name))
+                        {
+                            selectedindex = i;
+                        }
+                    }
+                }
+
+                if ((sessionItinerary.Count - 1 != 0) && (selectedindex != 0))
+                {
+                    var x = sessionItinerary[selectedindex];
+                    var y = sessionItinerary[selectedindex - 1];
+
+                    sessionItinerary[selectedindex] = y;
+                    sessionItinerary[selectedindex - 1] = x;
+                }
             }
 
             Session["myItinerary"] = sessionItinerary;

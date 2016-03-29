@@ -303,6 +303,7 @@
     <Content Include="Views\Personal_Itineraries\SignIn.cshtml" />
     <Content Include="Views\Itinerary\ViewItinerary.cshtml" />
     <Content Include="Views\Itinerary\RecommendedItineraries.cshtml" />
+    <Content Include="Views\Personal_Itineraries\_PartialCurrentItinerary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

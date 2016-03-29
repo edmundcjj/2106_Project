@@ -1,0 +1,63 @@
+﻿@model IEnumerable<OneStopTourist.Models.HomePage>
+
+<table style="width:100%">    
+    @foreach (var item in Model)
+    {
+            if (item.getAttraction != null)
+            {
+            <tr>
+                <td style="width:80%">
+                    @Html.DisplayFor(modelItem => item.getAttraction.Name)
+                </td>
+                <td>
+                    <a href="@Url.Action("ViewAttraction", "Attraction", new { id = item.getAttraction.Aid })">
+                        <img src="@Url.Content("~/Images/more.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("MoveAttractionUp", "Home", new { id = item.getAttraction.Aid })">
+                        <img src="@Url.Content("~/Images/arrowup.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("MoveAttractionDown", "Home", new { id = item.getAttraction.Aid })">
+                        <img src="@Url.Content("~/Images/arrowdown.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("RemoveAttraction", "Home", new { id = item.getAttraction.Aid })">
+                        <img src="@Url.Content("~/Images/trash.png")" width="25" />
+                    </a>
+                </td>
+            </tr>
+            }
+            else if (item.getService != null)
+            {
+            <tr>
+                <td style="width:80%">
+                    @Html.DisplayFor(modelItem => item.getService.Name)
+                </td>
+                <td>
+                    <a href="@Url.Action("ViewService", "Service", new { id = item.getService.Sid })">
+                        <img src="@Url.Content("~/Images/more.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("MoveServiceUp", "Home", new { id = item.getService.Sid })">
+                        <img src="@Url.Content("~/Images/arrowup.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("MoveServiceDown", "Home", new { id = item.getService.Sid })">
+                        <img src="@Url.Content("~/Images/arrowdown.png")" width="25" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("RemoveService", "Home", new { id = item.getService.Sid })">
+                        <img src="@Url.Content("~/Images/trash.png")" width="25" />
+                    </a>
+                </td>
+            </tr>
+            }
+        }
+</table>

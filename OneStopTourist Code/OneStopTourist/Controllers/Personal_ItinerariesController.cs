@@ -16,7 +16,19 @@ namespace OneStopTourist.Controllers
         // GET: Personal_Itineraries/Save
         public ActionResult Save()
         {
-            return View();
+            List<HomePage> allList = new List<HomePage>();
+
+            List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+
+            if (sessionItinerary != null)
+            {
+                foreach (HomePage item in sessionItinerary)
+                {
+                    allList.Add(item);
+                }
+            }
+
+            return PartialView(allList);
         }
 
         // POST: Personal_Itineraries/Save

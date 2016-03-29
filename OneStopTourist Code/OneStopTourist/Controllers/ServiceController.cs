@@ -129,7 +129,7 @@ namespace OneStopTourist.Controllers
             serviceReview.Rid = review.Rid;
             serviceReview.Sid = id;
             rsDGateway.Insert(serviceReview);
-            return RedirectToAction("Services", id);
+            return RedirectToAction("ViewService/" + id, id);
         }
     }
 }
