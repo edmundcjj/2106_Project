@@ -124,7 +124,6 @@ C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTo
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.dll
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.Facebook.dll
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.Google.dll
-C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.OAuth.dll
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Owin.Security.Twitter.dll
 C:\Users\joseyxz\Documents\GitHub\One-Stop-Tourist\OneStopTourist Code\OneStopTourist\bin\Microsoft.Web.Infrastructure.dll

@@ -28,18 +28,18 @@ namespace OneStopTourist.Controllers
                 }
             }
 
-            return PartialView(allList);
+            return View(allList);
         }
 
         // POST: Personal_Itineraries/Save
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save([Bind(Include = "Content,Nickname")] Personal_Itineraries Personal_Itineraries)
+        public ActionResult Save(HomePage Personal_Itineraries)
         {
             if (ModelState.IsValid)
             {
                 //retrieve first two letters of the Nickname
-                string retrievedLetter = Personal_Itineraries.Nickname.Substring(0, 2);
+                string retrievedLetter = Personal_Itineraries.getPersonalItinerary.Nickname.Substring(0, 2);
 
                 //retrieve highest PIid in Personal_Itineraries table
                 int value = piGateway.SelectHighestPIid();
@@ -48,25 +48,49 @@ namespace OneStopTourist.Controllers
                 int result = value + 1;
 
                 //store pin value
-                Personal_Itineraries.Pin = retrievedLetter + result;
+                Personal_Itineraries.getPersonalItinerary.Pin = retrievedLetter + result;
+
+                //get content from session
+                string content = "";
+                List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+
+                if (sessionItinerary != null)
+                {
+                    //for each item in the session, get its id and keep appending to string
+                    foreach (HomePage item in sessionItinerary)
+                    {
+                        if (item.getAttraction != null) {
+                            content += "A-" + item.getAttraction.Aid.ToString() + ",";
+                        }
+                        else
+                        {
+                            content += "S-" + item.getService.Sid.ToString() + ",";
+                        }
+                    }
+                }
+
+                Personal_Itineraries.getPersonalItinerary.Content = content;
 
                 //insert content, nickname, pin into database
-                piGateway.Insert(Personal_Itineraries);
+                piGateway.Insert(Personal_Itineraries.getPersonalItinerary);
 
                 /*
                 TempData["message"] = "Successfully saved. Your pin number is: " + Personal_Itineraries.Pin + ".Please sign in using your nickname and pin to retrieve your itinerary.";
                 */
 
-
-
                 //redirect back to "save" page
                 //return RedirectToAction("Save");
-
-
             }
             //return RedirectToAction("Save");
 
-            return View(Personal_Itineraries);
+            Session["myItinerary"] = null;
+
+            List<HomePage> itineraryView = new List<HomePage>();
+            HomePage personalItinerary = new HomePage();
+            personalItinerary.getPersonalItinerary = Personal_Itineraries.getPersonalItinerary;
+            itineraryView.Add(personalItinerary);
+
+            return View(itineraryView);
         }
 
         //GET: Personal_Itineraries/Upload
@@ -103,7 +127,13 @@ namespace OneStopTourist.Controllers
                //return Redirect("/Itinerary/Index");
             }
 
-            return View(Personal_Itineraries);
+            /*NEED TO AMEND THIS*/
+            List<HomePage> itineraryView = new List<HomePage>();
+            HomePage personalItinerary = new HomePage();
+            personalItinerary.getPersonalItinerary = Personal_Itineraries;
+            itineraryView.Add(personalItinerary);
+
+            return View(itineraryView);
         }
 
         //GET: Personal_Itineraries/SignIn

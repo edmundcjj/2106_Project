@@ -129,7 +129,14 @@ namespace OneStopTourist.Controllers
                 sessionItinerary.RemoveAt(selectedindex);
             }
 
-            Session["myItinerary"] = sessionItinerary;
+            //If it has nothing, deem the session null
+            if (sessionItinerary.Count() == 0)
+            {
+                Session["myItinerary"] = null;
+            }
+            else {
+                Session["myItinerary"] = sessionItinerary;
+            }
 
             return RedirectToAction("Index");
         }
@@ -159,7 +166,14 @@ namespace OneStopTourist.Controllers
                 sessionItinerary.RemoveAt(selectedindex);
             }
 
-            Session["myItinerary"] = sessionItinerary;
+            //If it has nothing, deem the session null
+            if (sessionItinerary.Count() == 0)
+            {
+                Session["myItinerary"] = null;
+            }
+            else {
+                Session["myItinerary"] = sessionItinerary;
+            }
 
             return RedirectToAction("Index");
         }

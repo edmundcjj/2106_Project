@@ -80,6 +80,20 @@ namespace OneStopTourist.Models
         //public virtual Services Services { get; set; }
     }
 
+    public class Personal_Itineraries
+    {
+        [Key]
+        public int PIid { get; set; }
+
+        public string Content { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The Nickname must be at least {2} characters long.", MinimumLength = 2)]
+        public string Nickname { get; set; }
+
+        public string Pin { get; set; }
+    }
+
     public class HomePage
     {
         public Attractions getAttraction { get; set; }
@@ -87,6 +101,7 @@ namespace OneStopTourist.Models
         public Reviews getReview { get; set; }
         public Reviews getAttractionReview { get; set; }
         public Reviews getServiceReview { get; set; }
+        public Personal_Itineraries getPersonalItinerary { get; set; }
 
         public HomePage getSessionItinerary { get; set; }
     }

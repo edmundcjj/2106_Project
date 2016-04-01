@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<OneStopTourist.Models.HomePage>
 
+@if(Session["myItinerary"] != null)
+{
 <table style="width:100%">    
     @foreach (var item in Model)
     {
@@ -58,6 +60,13 @@
                     </a>
                 </td>
             </tr>
-            }
         }
+    }
 </table>
+}
+else
+{
+    <span>Your personal itinerary is empty.</span><br/>
+    @Html.ActionLink("View some recommended itineraries?", "RecommendedItineraries", "Itinerary")<br />
+    @Html.ActionLink("View all itineraries?", "Itineraries", "Itinerary")
+}
