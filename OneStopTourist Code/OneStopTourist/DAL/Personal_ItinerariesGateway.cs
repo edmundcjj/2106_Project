@@ -52,5 +52,11 @@ namespace OneStopTourist.DAL
 
             return content;
         }
+
+        // Check for duplicate nicknames in database
+        public Boolean check_duplicate_nickname(string nickname)
+        {
+            return (db.Personal_Itineraries.Any(x => x.Nickname == nickname));
+        }
     }
 }
