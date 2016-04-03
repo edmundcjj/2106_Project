@@ -12,17 +12,104 @@ namespace OneStopTourist.Controllers
     {
         private ItineraryGateway iGateway = new ItineraryGateway();
         private ReviewGateway rGateWay = new ReviewGateway();
+        private AttractionGateway aGateWay = new AttractionGateway();
+        private ServiceGateway sGateway = new ServiceGateway();
+        private DataGateway<Itineraries_has_Reviews> irGateWay = new DataGateway<Itineraries_has_Reviews>();
 
         // GET: All Itineraries
         public ActionResult Itineraries()
         {
-            return View(iGateway.getAllItineraries());
+            List<HomePage> allList = new List<HomePage>();
+            List<HomePage> returningList = new List<HomePage>();
+
+            var allItineraries = iGateway.getAllItineraries();
+            using (var itineraryList = allItineraries.GetEnumerator())
+            {
+                while (itineraryList.MoveNext())
+                {
+                    var itineraries = itineraryList.Current;
+
+                    HomePage item = new HomePage();
+                    item.getItinerary = itineraries;
+                    allList.Add(item);
+                }
+            }
+
+            foreach (HomePage obj in allList)
+            {
+                returningList.Add(obj);
+                string spotID = obj.getItinerary.Content;
+                string[] spots = spotID.Split(',');
+                int stringCount = spots.Count();
+                foreach (string contentList in spots.Take(stringCount-1))
+                {
+                    string getIdentificationNo = contentList.Substring(2, contentList.Length - 2);
+                    int identificationNo = Convert.ToInt32(getIdentificationNo);
+                    if (contentList.Substring(0, 2) == "A-")
+                    {
+                        HomePage item = new HomePage();
+                        Attractions attractionSpot = aGateWay.SelectById(identificationNo);
+                        item.getAttraction = attractionSpot;
+                        returningList.Add(item);
+                    }
+                    else if (contentList.Substring(0, 2) == "S-")
+                    {
+                        HomePage item = new HomePage();
+                        Services serviceSpot = sGateway.SelectById(identificationNo);
+                        returningList.Add(item);
+                    }
+                }
+            }
+
+            return View(returningList);
         }
 
         // GET: Recommended Itineraries
         public ActionResult RecommendedItineraries()
         {
-            return View(iGateway.getRecommendedItineraries());
+            List<HomePage> allList = new List<HomePage>();
+            List<HomePage> returningList = new List<HomePage>();
+
+            var recoItineraries = iGateway.getRecommendedItineraries();
+            using (var itineraryList = recoItineraries.GetEnumerator())
+            {
+                while (itineraryList.MoveNext())
+                {
+                    var itineraries = itineraryList.Current;
+
+                    HomePage item = new HomePage();
+                    item.getItinerary = itineraries;
+                    allList.Add(item);
+                }
+            }
+
+            foreach (HomePage obj in allList)
+            {
+                returningList.Add(obj);
+                string spotID = obj.getItinerary.Content;
+                string[] spots = spotID.Split(',');
+                int stringCount = spots.Count();
+                foreach (string contentList in spots.Take(stringCount - 1))
+                {
+                    string getIdentificationNo = contentList.Substring(2, contentList.Length - 2);
+                    int identificationNo = Convert.ToInt32(getIdentificationNo);
+                    if (contentList.Substring(0, 2) == "A-")
+                    {
+                        HomePage item = new HomePage();
+                        Attractions attractionSpot = aGateWay.SelectById(identificationNo);
+                        item.getAttraction = attractionSpot;
+                        returningList.Add(item);
+                    }
+                    else if (contentList.Substring(0, 2) == "S-")
+                    {
+                        HomePage item = new HomePage();
+                        Services serviceSpot = sGateway.SelectById(identificationNo);
+                        returningList.Add(item);
+                    }
+                }
+            }
+
+            return View(returningList);
         }
 
         // GET: Itinerary Details
@@ -30,29 +117,47 @@ namespace OneStopTourist.Controllers
         {
             var reviewModel = rGateWay.getItineraryReview(id);
 
-            ItineraryPage viewItem = new ItineraryPage();
+            HomePage viewItem = new HomePage();
             viewItem.getItinerary = iGateway.SelectById(id);
+            
+            //Create a list to store both the itinerary details and all of its reviews
+            List<HomePage> reviewList = new List<HomePage>();
+            //First review is stored in the first element of reviewList with the attraction details
+            reviewList.Add(viewItem);
 
-            if (!reviewModel.Any())
+            string itineraryString = viewItem.getItinerary.Content;
+
+            string[] itineraryList = itineraryString.Split(',');
+            int getSpotsCount = itineraryList.Count();
+            foreach (string spots in itineraryList.Take(getSpotsCount - 1))
             {
-                List<ItineraryPage> reviewPage = new List<ItineraryPage>();
-                reviewPage.Add(viewItem);
-
-                return View(reviewPage);
+                HomePage itinerarySpots = new HomePage();
+                string spotIDstring = spots.Substring(2, spots.Length - 2);
+                int spotID = Convert.ToInt32(spotIDstring);
+                if (spots.Substring(0, 2) == "A-")
+                {
+                    Attractions attractionSpot = aGateWay.SelectById(spotID);
+                    itinerarySpots.getAttraction = attractionSpot;
+                    reviewList.Add(itinerarySpots);
+                }
+                else if (spots.Substring(0, 2) == "S-")
+                {
+                    Services serviceSpot = sGateway.SelectById(spotID);
+                    itinerarySpots.getService = serviceSpot;
+                    reviewList.Add(itinerarySpots);
+                }
             }
-            else {
-                //Create a list to store both the itinerary details and all of its reviews
-                List<ItineraryPage> reviewList = new List<ItineraryPage>();
-                //First review is stored in the first element of reviewList with the attraction details
-                reviewList.Add(viewItem);
+
+            if (reviewModel.Any())
+            {
                 foreach (Reviews item in reviewModel)
                 {
-                    ItineraryPage chgItem = new ItineraryPage();
+                    HomePage chgItem = new HomePage();
                     chgItem.getReview = item;
                     reviewList.Add(chgItem);
                 }
-                return View(reviewList);
             }
+            return View(reviewList);
         }
 
         // POST: Itinerary/ViewItinerary
@@ -76,85 +181,43 @@ namespace OneStopTourist.Controllers
 
             itineraryReview.Rid = review.Rid;
             itineraryReview.Iid = id;
+            irGateWay.Insert(itineraryReview);
             return RedirectToAction("Itineraries", id);
         }
 
-
-
-
-
-
-
-        // GET: Itinerary/Details/5
-        public ActionResult Details(int id)
+        public ActionResult UseItinerary(int? id)
         {
-            return View();
-        }
+            List<HomePage> getItinerary = new List<HomePage>();
+            HomePage viewItem = new HomePage();
+            viewItem.getItinerary = iGateway.SelectById(id);
 
-        // GET: Itinerary/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            string itineraryString = viewItem.getItinerary.Content;
 
-        // POST: Itinerary/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            string[] itineraryList = itineraryString.Split(',');
+            int getSpotsCount = itineraryList.Count();
+            foreach (string spots in itineraryList.Take(getSpotsCount - 1))
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                HomePage itinerarySpots = new HomePage();
+                string spotIDstring = spots.Substring(2, spots.Length - 2);
+                int spotID = Convert.ToInt32(spotIDstring);
+                if (spots.Substring(0, 2) == "A-")
+                {
+                    Attractions attractionSpot = aGateWay.SelectById(spotID);
+                    itinerarySpots.getAttraction = attractionSpot;
+                    getItinerary.Add(itinerarySpots);
+                }
+                else if (spots.Substring(0, 2) == "S-")
+                {
+                    Services serviceSpot = sGateway.SelectById(spotID);
+                    itinerarySpots.getService = serviceSpot;
+                    getItinerary.Add(itinerarySpots);
+                }
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: Itinerary/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            Session["myItinerary"] = getItinerary;
 
-        // POST: Itinerary/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Itinerary/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Itinerary/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("../Home/Index");
         }
     }
 }

@@ -222,7 +222,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
-    <Compile Include="Models\Itineraries.cs" />
     <Compile Include="Models\ItinerariesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -295,16 +294,13 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_IdentityPartial.cshtml" />
     <Content Include="Views\Personal_Itineraries\Save.cshtml" />
-    <Content Include="Views\Personal_Itineraries\Upload.cshtml" />
     <Content Include="Views\Itinerary\Itineraries.cshtml" />
     <Content Include="Views\Personal_Itineraries\SignIn.cshtml" />
     <Content Include="Views\Itinerary\ViewItinerary.cshtml" />
     <Content Include="Views\Itinerary\RecommendedItineraries.cshtml" />
     <Content Include="Views\Personal_Itineraries\_PartialCurrentItinerary.cshtml" />
-    <Content Include="Views\Personal_Itineraries\LogOut.cshtml" />
     <Content Include="Views\Personal_Itineraries\_PartialSaveItinerary.cshtml" />
     <Content Include="Views\Personal_Itineraries\_PartialUploadItinerary.cshtml" />
-    <Content Include="Views\Personal_Itineraries\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

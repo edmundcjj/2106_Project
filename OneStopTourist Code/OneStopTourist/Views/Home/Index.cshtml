@@ -198,9 +198,8 @@
         <text>
             items.push(@Html.Raw(Json.Encode(item.getAttraction.Latitude)) + "," + @Html.Raw(Json.Encode(item.getAttraction.Longitude)));
         </text>
-    }
-    else
-    {
+        }
+        else if (item.getService != null) {
         <text>
             items.push(@Html.Raw(Json.Encode(item.getService.Latitude)) + "," + @Html.Raw(Json.Encode(item.getService.Longitude)));
         </text>

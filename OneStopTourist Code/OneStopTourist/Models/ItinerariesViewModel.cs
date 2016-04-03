@@ -9,7 +9,9 @@ namespace OneStopTourist.Models
 {
     public class ItinerariesViewModel
     {
-        public Itineraries getItineraries { get; set; }
-        public Personal_Itineraries getPersonal_Itineraries { get; set; }
+        public class ItineraryPage {
+            public Itineraries getItineraries { get; set; }
+            public Reviews getReview { get; set; }
+        }
     }
 }

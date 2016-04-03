@@ -1,34 +1,67 @@
-﻿@model IEnumerable<OneStopTourist.Models.Itineraries>
+﻿@model IEnumerable<OneStopTourist.Models.HomePage>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Itineraries</h2>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Nickname)
+            @Html.DisplayNameFor(model => model.getItinerary.Nickname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
+            Itinerary
         </th>
+        <th></th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nickname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "ViewItinerary", new { id=item.Iid })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        if (item.getItinerary != null)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.getItinerary.Nickname)
+                </td>
+                <td>
+                </td>
+                <td>
+                    <a href="@Url.Action("ViewItinerary", new { id = item.getItinerary.Iid })">
+                        <img src="@Url.Content("~/Images/more.png")" width="15" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("UseItinerary", new { id = item.getItinerary.Iid })">
+                        <img src="@Url.Content("~/Images/plus.png")" width="15" />
+                    </a>
+                </td>
+            </tr>
+        }
+        else if (item.getAttraction != null)
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.getAttraction.Name)
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        else if (item.getService != null)
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.getService.Name)
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+    }
 
 </table>

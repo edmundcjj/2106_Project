@@ -94,6 +94,30 @@ namespace OneStopTourist.Models
         public string Pin { get; set; }
     }
 
+    public class Itineraries
+    {
+        [Key]
+        public int Iid { get; set; }
+
+        public string Nickname { get; set; }
+        public string Content { get; set; }
+    }
+
+    public class Itineraries_has_Reviews
+    {
+        [Key]
+        //[ForeignKey("Reviews")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Rid { get; set; }
+
+        [Required]
+        //[ForeignKey("Itineraries")]
+        public int Iid { get; set; }
+
+        //public virtual Reviews Reviews { get; set; }
+        //public virtual Itineraries Itineraries { get; set; }
+    }
+
     public class HomePage
     {
         public Attractions getAttraction { get; set; }
@@ -101,6 +125,8 @@ namespace OneStopTourist.Models
         public Reviews getReview { get; set; }
         public Reviews getAttractionReview { get; set; }
         public Reviews getServiceReview { get; set; }
+        public Itineraries getItinerary { get; set; }
+        public Reviews getItineraryReview { get; set; }
         public Personal_Itineraries getPersonalItinerary { get; set; }
 
         public HomePage getSessionItinerary { get; set; }
