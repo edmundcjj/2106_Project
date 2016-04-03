@@ -211,7 +211,6 @@
     <Compile Include="Controllers\Personal_ItinerariesController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="DAL\AttractionGateway.cs" />
-    <Compile Include="DAL\AttractionReviewGateway.cs" />
     <Compile Include="DAL\DataGateway.cs" />
     <Compile Include="DAL\IDataGateway.cs" />
     <Compile Include="DAL\ItineraryGateway.cs" />
@@ -302,6 +301,10 @@
     <Content Include="Views\Itinerary\ViewItinerary.cshtml" />
     <Content Include="Views\Itinerary\RecommendedItineraries.cshtml" />
     <Content Include="Views\Personal_Itineraries\_PartialCurrentItinerary.cshtml" />
+    <Content Include="Views\Personal_Itineraries\LogOut.cshtml" />
+    <Content Include="Views\Personal_Itineraries\_PartialSaveItinerary.cshtml" />
+    <Content Include="Views\Personal_Itineraries\_PartialUploadItinerary.cshtml" />
+    <Content Include="Views\Personal_Itineraries\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

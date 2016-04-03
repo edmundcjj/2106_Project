@@ -1,0 +1,23 @@
+﻿<div class="col-md-6">
+    <strong>Update your saved itinerary?</strong><br />
+    If you have made changes to your itinerary, you may save your itinerary and access it again using the same nickname and PIN.
+    <br/><br/>
+    <span class="btn btn-default" @if (Session["myItinerary"] == null) { <text>disabled</text> }>@Html.ActionLink("Update Itinerary", "Update", "Personal_Itineraries")</span>
+        
+    @TempData["returnUpdateStatus"]
+    <br/><br/>
+    <br/>
+    <strong>Share your itinerary with everyone.</strong><br />
+    If you had a fulfilling trip with the itinerary exactly as planned, you may share your itinerary with everyone!
+    <br /><br />
+    <i>A few things to note,</i><br />
+    1. Ensure that the itinerary as shown on the left is the itinerary you intend to share.<br />
+    2. After sharing, you will not be able to make any amendments to the shared itinerary.<br />
+    3. Shared itineraries are open for reviews and ratings.<br />
+    4. People will be able to use your itinerary.<br />
+    5. Your account with the saved itinerary will be deleted.
+    <br /><br />
+    <span class="btn btn-default" @if (Session["myItinerary"] == null) { <text> disabled</text> }>@Html.ActionLink("Share", "Upload", "Personal_Itineraries")</span>
+    
+    @TempData["returnShareStatus"]
+</div>

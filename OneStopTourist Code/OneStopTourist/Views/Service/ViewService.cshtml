@@ -31,15 +31,14 @@
         {
             <strong>@Html.DisplayFor(modelItem => item.getReview.Nickname)</strong>
             <br />
-            <span id="rateNumber">@Html.DisplayFor(modelItem => item.getReview.Ratings)</span>
-            <span class="star-rating">
-                <input type="radio" name="ratedisplay" id="1" value="1" onclick="return false;"><i></i>
-                <input type="radio" name="ratedisplay" id="2" value="2" onclick="return false;"><i></i>
-                <input type="radio" name="ratedisplay" id="3" value="3" onclick="return false;"><i></i>
-                <input type="radio" name="ratedisplay" id="4" value="4" onclick="return false;"><i></i>
-                <input type="radio" name="ratedisplay" id="5" value="5" onclick="return false;"><i></i>
-            </span><br />
-            <script>setRatings()</script>
+            <span class="review-star-rating">
+                <input type="radio" name="@item.getReview.Rid" id="1" value="1" @if (item.getReview.Ratings == "1") { <text> checked </text> } /><i></i>
+                <input type="radio" name="@item.getReview.Rid" id="2" value="2" @if (item.getReview.Ratings == "2") { <text> checked </text> } /><i></i>
+                <input type="radio" name="@item.getReview.Rid" id="3" value="3" @if (item.getReview.Ratings == "3") { <text> checked </text> } /><i></i>
+                <input type="radio" name="@item.getReview.Rid" id="4" value="4" @if (item.getReview.Ratings == "4") { <text> checked </text> } /><i></i>
+                <input type="radio" name="@item.getReview.Rid" id="5" value="5" @if (item.getReview.Ratings == "5") { <text> checked </text> } /><i></i>
+            </span>
+            <span id="rateNumber">@Html.DisplayFor(modelItem => item.getReview.Ratings)/5 stars</span><br />
             <span style="font-style:italic;font-size:0.9em;">Posted on @Html.DisplayFor(modelItem => item.getReview.ReviewDate)</span>
             <br /><br />
             @Html.DisplayFor(modelItem => item.getReview.Content)<br /><br />

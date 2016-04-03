@@ -1,0 +1,58 @@
+﻿@model IEnumerable<OneStopTourist.Models.HomePage>
+
+@using (Html.BeginForm())
+{
+    <div class="col-md-6">
+        <strong>Save your itinerary?</strong><br />
+        By saving your personal itinerary, you'll be able to continue off where you left by logging in.
+        <br /><br />
+        <i>How?</i><br />
+        1. Plan your itinerary.<br />
+        2. Enter a nickname below.<br />
+        3. A pin will be generated. *<br />
+        4. Login with your nickname and pin to retrieve your saved itinerary.<br />
+        <br />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstOrDefault().getPersonalItinerary.Nickname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstOrDefault().getPersonalItinerary.Nickname, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Generate PIN" class="btn btn-default" @if (Session["myItinerary"] == null) { <text> disabled /></text>
+                }
+                else {
+                    @Url.Action("Save", "Personal_Itineraries")
+                }
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstOrDefault().getPersonalItinerary.Pin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.FirstOrDefault().getPersonalItinerary.Pin, new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" })
+            </div>
+        </div>
+        <br />
+        <br />
+        @Html.ValidationMessageFor(model => model.FirstOrDefault().getPersonalItinerary.Nickname, "", new { @class = "text-danger" })
+        @if (ViewBag.duplicateNick == "Available")
+        {
+            <span>You may now sign in with the above nickname and generated PIN.</span>
+        }
+        else
+        {
+            <span style="color:red;"> @ViewBag.duplicateNick </span>
+        }
+    <br />
+    <br />
+    Already have a PIN? @Html.ActionLink("Sign in", "SignIn", "Personal_Itineraries") here.
+    <br />
+    * Please record down your PIN as there are no ways to retrieve it.
+    </div>
+}

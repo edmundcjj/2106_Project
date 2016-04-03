@@ -10,11 +10,9 @@ namespace OneStopTourist.Controllers
 {
     public class AttractionController : Controller
     {
-        private DataGateway<Attractions> aGateWay = new DataGateway<Attractions>();
         private ReviewGateway rGateWay = new ReviewGateway();
-        private AttractionGateway aQueryGateWay = new AttractionGateway();
-        private DataGateway<Reviews> rDGateway = new DataGateway<Reviews>();
-        private DataGateway<Attractions_has_Reviews> raDGateway = new DataGateway<Attractions_has_Reviews>();
+        private AttractionGateway aGateWay = new AttractionGateway();
+        private DataGateway<Attractions_has_Reviews> arGateWay = new DataGateway<Attractions_has_Reviews>();
 
         public ActionResult ViewAttraction(int? id)
         {
@@ -45,8 +43,9 @@ namespace OneStopTourist.Controllers
             }
         }
 
-        public ActionResult Attractions(string sortOrder, string searchString, string category)
+        public ActionResult Attractions(string searchString, string category)
         {
+            //retrieve all attraction
             List<HomePage> allList = new List<HomePage>();
             int count = aGateWay.SelectAll().Count();
             while (count != 0)
@@ -57,53 +56,69 @@ namespace OneStopTourist.Controllers
                 count = count - 1;
             }
 
-            if (String.IsNullOrEmpty(sortOrder))
-            {
-                sortOrder = "Asc";
-            }
-            else if (sortOrder == "Asc")
-            {
-                sortOrder = "Desc";
-            }
-            else if (sortOrder == "Desc")
-            {
-                sortOrder = "Asc";
-            }
-            ViewBag.NameSort = sortOrder;
-            var names = from c in allList
-                             select c;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                names = names.Where(s => s.getAttraction.Name.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "Desc":
-                    names = names.OrderByDescending(c => c.getAttraction.Name);
-                    break;
-                default:
-                    names = names.OrderBy(c => c.getAttraction.Name);
-                    break;
-            }
-
-            //For CategoryFilter
-            ViewBag.Category = aQueryGateWay.getCategories();
+            //For Category Filter
+            ViewBag.Category = aGateWay.getCategories();
 
             if ((searchString == null || searchString == ""))
             {
-                var catModel = aQueryGateWay.getAttractionsByCat(category);
+                var catModel = aGateWay.getAttractionsByCat(category);
 
-                List<HomePage> searchList = new List<HomePage>();
+                //System.Diagnostics.Debug.WriteLine("testtest123" + category);
+
+                List<HomePage> catList = new List<HomePage>();
                 foreach (Attractions item in catModel)
                 {
-                    HomePage chgItem = new HomePage();
-                    chgItem.getAttraction = item;
-                    searchList.Add(chgItem);
+                    HomePage catItem = new HomePage();
+                    catItem.getAttraction = item;
+                    catList.Add(catItem);
                 }
-                return View(searchList);
+                return View(catList);
             }
 
-            return View(names.ToList());
+            else if (searchString != null)
+            {
+                //For Search Filter
+                if ((category == null || category == ""))
+                {
+                    var searchModel = aGateWay.getAttractionsBySearch(searchString);
+
+                    List<HomePage> searchList = new List<HomePage>();
+                    foreach (Attractions item in searchModel)
+                    {
+                        HomePage searchItem = new HomePage();
+                        searchItem.getAttraction = item;
+                        searchList.Add(searchItem);
+                    }
+                    return View(searchList);
+                }
+
+                //For Category & Search Filter
+                else
+                {
+                    var twoFilterModel = aGateWay.getAttractionTwoFilter(category, searchString);
+
+                    List<HomePage> twoFilterList = new List<HomePage>();
+                    foreach (Attractions item in twoFilterModel)
+                    {
+                        HomePage twoFilterItem = new HomePage();
+                        twoFilterItem.getAttraction = item;
+                        twoFilterList.Add(twoFilterItem);
+                    }
+                    return View(twoFilterList);
+                }
+            }
+
+
+            //Sort attraction by names
+            var sortModel = aGateWay.SelectAllSortByName();
+            List<HomePage> sortList = new List<HomePage>();
+            foreach (Attractions item in sortModel)
+            {
+                HomePage sortItem = new HomePage();
+                sortItem.getAttraction = item;
+                sortList.Add(sortItem);
+            }
+            return View(sortList);
         }
 
         // POST: Attraction/ViewAttraction
@@ -123,12 +138,12 @@ namespace OneStopTourist.Controllers
                 review.Content = givenContent;
                 review.ReviewDate = DateTime.Now;
             }
-            rDGateway.Insert(review);
+            rGateWay.Insert(review);
 
 
             attractionReview.Rid = review.Rid;
             attractionReview.Aid = id;
-            raDGateway.Insert(attractionReview);
+            arGateWay.Insert(attractionReview);
             return RedirectToAction("ViewAttraction/"+id, id);
         }
     }

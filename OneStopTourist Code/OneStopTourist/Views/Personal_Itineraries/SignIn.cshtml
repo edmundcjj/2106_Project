@@ -34,6 +34,11 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Submit" class="btn btn-default" @Url.Action("SignIn", "Personal_itineraries")/>
+                <br/><br/>
+                @if (Session["logInError"] != null)
+                {
+                    <span style="color:red;">@Session["logInError"]</span>
+                }
             </div>
         </div>
     </div>

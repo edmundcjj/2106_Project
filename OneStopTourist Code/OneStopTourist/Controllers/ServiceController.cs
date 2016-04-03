@@ -10,11 +10,9 @@ namespace OneStopTourist.Controllers
 {
     public class ServiceController : Controller
     {
-        private DataGateway<Services> sGateWay = new DataGateway<Services>();
         private ReviewGateway rGateWay = new ReviewGateway();
-        private ServiceGateway sQueryGateWay = new ServiceGateway();
-        private DataGateway<Reviews> rDGateway = new DataGateway<Reviews>();
-        private DataGateway<Services_has_Reviews> rsDGateway = new DataGateway<Services_has_Reviews>();
+        private ServiceGateway sGateWay = new ServiceGateway();
+        private DataGateway<Services_has_Reviews> srGateWay = new DataGateway<Services_has_Reviews>();
 
         public ActionResult ViewService(int? id)
         {
@@ -45,8 +43,9 @@ namespace OneStopTourist.Controllers
             }
         }
 
-        public ActionResult Services(string sortOrder, string searchString, string category)
+        public ActionResult Services(string searchString, string category)
         {
+            //retrieve all services
             List<HomePage> allList = new List<HomePage>();
             int count = sGateWay.SelectAll().Count();
             while (count != 0)
@@ -57,53 +56,69 @@ namespace OneStopTourist.Controllers
                 count = count - 1;
             }
 
-            if (String.IsNullOrEmpty(sortOrder))
-            {
-                sortOrder = "Asc";
-            }
-            else if (sortOrder == "Asc")
-            {
-                sortOrder = "Desc";
-            }
-            else if (sortOrder == "Desc")
-            {
-                sortOrder = "Asc";
-            }
-            ViewBag.CategorySort = sortOrder;
-            var categories = from c in allList
-                             select c;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                categories = categories.Where(s => s.getService.Name.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "Desc":
-                    categories = categories.OrderByDescending(c => c.getService.Category);
-                    break;
-                default:
-                    categories = categories.OrderBy(c => c.getService.Category);
-                    break;
-            }
-
-            //For CategoryFilter
-            ViewBag.Category = sQueryGateWay.getCategories();
+            //For Category Filter
+            ViewBag.Category = sGateWay.getCategories();
 
             if ((searchString == null || searchString == ""))
             {
-                var catModel = sQueryGateWay.getServicesByCat(category);
+                var catModel = sGateWay.getServicesByCat(category);
 
-                List<HomePage> searchList = new List<HomePage>();
+                //System.Diagnostics.Debug.WriteLine("testtest123" + category);
+
+                List<HomePage> catList = new List<HomePage>();
                 foreach (Services item in catModel)
                 {
-                    HomePage chgItem = new HomePage();
-                    chgItem.getService = item;
-                    searchList.Add(chgItem);
+                    HomePage catItem = new HomePage();
+                    catItem.getService = item;
+                    catList.Add(catItem);
                 }
-                return View(searchList);
+                return View(catList);
             }
 
-            return View(categories.ToList());
+            else if (searchString != null)
+            {
+                //For Search Filter
+                if ((category == null || category == ""))
+                {
+                    var searchModel = sGateWay.getServicesBySearch(searchString);
+
+                    List<HomePage> searchList = new List<HomePage>();
+                    foreach (Services item in searchModel)
+                    {
+                        HomePage searchItem = new HomePage();
+                        searchItem.getService = item;
+                        searchList.Add(searchItem);
+                    }
+                    return View(searchList);
+                }
+
+                //For Category & Search Filter
+                else
+                {
+                    var twoFilterModel = sGateWay.getServicesTwoFilter(category, searchString);
+
+                    List<HomePage> twoFilterList = new List<HomePage>();
+                    foreach (Services item in twoFilterModel)
+                    {
+                        HomePage twoFilterItem = new HomePage();
+                        twoFilterItem.getService = item;
+                        twoFilterList.Add(twoFilterItem);
+                    }
+                    return View(twoFilterList);
+                }
+            }
+
+
+            //Sort services by names
+            var sortModel = sGateWay.SelectAllSortByName();
+            List<HomePage> sortList = new List<HomePage>();
+            foreach (Services item in sortModel)
+            {
+                HomePage sortItem = new HomePage();
+                sortItem.getService = item;
+                sortList.Add(sortItem);
+            }
+            return View(sortList);
         }
 
         // POST: Attraction/ViewAttraction
@@ -123,12 +138,12 @@ namespace OneStopTourist.Controllers
                 review.Content = givenContent;
                 review.ReviewDate = DateTime.Now;
             }
-            rDGateway.Insert(review);
+            rGateWay.Insert(review);
 
 
             serviceReview.Rid = review.Rid;
             serviceReview.Sid = id;
-            rsDGateway.Insert(serviceReview);
+            srGateWay.Insert(serviceReview);
             return RedirectToAction("ViewService/" + id, id);
         }
     }

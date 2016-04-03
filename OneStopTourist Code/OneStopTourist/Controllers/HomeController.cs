@@ -14,10 +14,12 @@ namespace OneStopTourist.Controllers
         private DataGateway<Services> sDGateWay = new DataGateway<Services>();
         private AttractionGateway aGateway = new AttractionGateway();
         private ServiceGateway sGateway = new ServiceGateway();
+        private Personal_ItinerariesGateway piGateway = new Personal_ItinerariesGateway();
 
         public ActionResult Index()
         {
             List<HomePage> allList = new List<HomePage>();
+            List<HomePage> tempItineraryList = new List<HomePage>();
 
             var bestAttractions = aGateway.getRecommendedAttractions();
             var bestServices = sGateway.getRecommendedServices();
@@ -50,14 +52,54 @@ namespace OneStopTourist.Controllers
                     allList.Add(item);
                 }
             }
-            
-            List<HomePage> sessionItinerary = (List<HomePage>) Session["myItinerary"];
 
-            if (sessionItinerary != null)
+            if (Session["loggedInUser"] != null && Session["myItinerary"] == null)
             {
-                foreach (HomePage item in sessionItinerary)
+                //Getting the username from session
+                String userName = Session["loggedInUser"].ToString();
+
+                //Get personal itinerary from database
+                var personalItinerary = piGateway.getPersonal_Itineraries(userName);
+                Personal_Itineraries userItinerary = new Personal_Itineraries();
+                userItinerary = personalItinerary.First();
+                ViewBag.DBItinerary = userItinerary;
+
+                //Getting each tourist spot from the content
+                string itineraryString = userItinerary.Content;
+
+                string[] itineraryList = itineraryString.Split(',');
+                int getSpotsCount = itineraryList.Count();
+                foreach (string spots in itineraryList.Take(getSpotsCount - 1))
                 {
-                    allList.Add(item);
+                    HomePage itinerarySpots = new HomePage();
+                    string spotIDstring = spots.Substring(2, spots.Length - 2);
+                    int spotID = Convert.ToInt32(spotIDstring);
+                    if (spots.Substring(0, 2) == "A-")
+                    {
+                        Attractions attractionSpot = aGateway.SelectById(spotID);
+                        itinerarySpots.getAttraction = attractionSpot;
+                        allList.Add(itinerarySpots);
+                        tempItineraryList.Add(itinerarySpots);
+                    }
+                    else if (spots.Substring(0, 2) == "S-")
+                    {
+                        Services serviceSpot = sGateway.SelectById(spotID);
+                        itinerarySpots.getService = serviceSpot;
+                        allList.Add(itinerarySpots);
+                        tempItineraryList.Add(itinerarySpots);
+                    }
+                }
+                Session["myItinerary"] = tempItineraryList;
+            }
+            else {
+                List<HomePage> sessionItinerary = (List<HomePage>)Session["myItinerary"];
+
+                if (sessionItinerary != null)
+                {
+                    foreach (HomePage item in sessionItinerary)
+                    {
+                        allList.Add(item);
+                    }
                 }
             }
 

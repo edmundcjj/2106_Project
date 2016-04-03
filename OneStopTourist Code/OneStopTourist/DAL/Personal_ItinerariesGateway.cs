@@ -35,10 +35,10 @@ namespace OneStopTourist.DAL
         }
 
         //retrieve personal itinerary
-        public IQueryable<Personal_Itineraries> getPersonal_Itineraries(string nickname, string pin)
+        public IQueryable<Personal_Itineraries> getPersonal_Itineraries(string nickname)
         {
             var content = from x in db.Personal_Itineraries
-                             where (x.Nickname == nickname) && (x.Pin == pin)
+                             where (x.Nickname == nickname)
                              select x;
 
             return content;
